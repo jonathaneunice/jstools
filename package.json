@@ -1,0 +1,26 @@
+{
+  "name": "jstools",
+  "version": "1.0.0",
+  "description": "Some basic helpers for working with JavaScript code.",
+  "main": "logging.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathaneunice/jstools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/jonathaneunice/jstools/issues"
+  },
+  "homepage": "https://github.com/jonathaneunice/jstools#readme",
+  "devDependencies": {
+    "test-console": "^1.0.0"
+  }
+}
