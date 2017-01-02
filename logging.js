@@ -16,7 +16,8 @@ var dcl = _dcl;
 var repr = JSON.stringify;
 var reprp = function(x) { return JSON.stringify(x, null, '  '); };
 
-
+// export for the node world
+module = module || {};
 exports = module.exports = {
   _cl: _cl,
   _dcl: _dcl,
