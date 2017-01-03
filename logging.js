@@ -27,7 +27,7 @@ function start_sho(offset) {
   if (offset === true) {
     var e = new Error();
     _cl('e.stack', e.stack);
-    var where = stack_parse(e.stack, 3);
+    var where = stack_parse(e.stack, 2);
     _line_offset = where.lineNumber;
   }
   var dashes = "-------";
