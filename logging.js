@@ -59,13 +59,12 @@ function stack_parse(s, lb) {
 function wherefrom() {
   var e = new Error();
   var where = stack_parse(e.stack, 3);
-  var prompt = '\u22d9';
   if (where === null) {
-    return prompt;
+    return '';
   } else {
     var lineNo = where.lineNumber - _line_offset + 1;
     var shortName = where.fileName.match(/^.*\/(.*)$/)[1];
-    return shortName + ':' + lineNo + prompt;
+    return shortName + ':' + lineNo;
   }
 }
 
