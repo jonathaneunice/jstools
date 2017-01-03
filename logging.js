@@ -19,10 +19,16 @@ var reprp = function(x) { return JSON.stringify(x, null, '  '); };
 
 var sho_where = true;
 var _lp_div = null;
+var _line_offset = 0;
 var emit = prep_emit();
 var BR;
 
-function start_sho() {
+function start_sho(offset) {
+  if (offset === true) {
+    var e = new Error();
+    var where = stack_parse(e.stack, 3);
+    _line_offset = where.lineNumber;
+  }
   var dashes = "-------";
   var now = new Date();
   var parts = [dashes, now.toLocaleString(), dashes];
@@ -56,8 +62,9 @@ function wherefrom() {
   if (where === null) {
     return prompt;
   } else {
+    var lineNo = where.lineNumber - _line_offset + 1;
     var shortName = where.fileName.match(/^.*\/(.*)$/)[1];
-    return shortName + ':' + where.lineNumber + prompt;
+    return shortName + ':' + lineNo + prompt;
   }
 }
 
