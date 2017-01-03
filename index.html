@@ -7,5 +7,12 @@
 <script>
 _start_sho();
 _sho('this is good')
+
+window.d3 = null;
+lib('d3', function(){
+  _cl('in cb');
+  window.d3 = exports;
+  d3.select('body').append('p').text('d3 loaded!');
+});
 </script>
 </body>
