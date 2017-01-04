@@ -5,28 +5,22 @@
 <p>hey</p>
 
 <script>
-_start_sho();
-_sho('this is good');
+start_run('test');
+say('this is good');
 
 var x = 1;
 var y = 3;
 var z = {'a':'for', 'b':'four'};
 
-shor({x, y, z});
+show({x, y, z});
 
 
 var s = 'ofwjeo fjljflkdsj flkdsjflk dsjfls kdjfd lskj ldsf kjl';
 s = s + s + s + s; s = s + s + s + s;
-shor({x, y, s, z});
+show('lots', {x, y, s, z});
 
-lib('d3', function(){
-  // cl('d3 cb')
-  d3.select('body').append('p').text('d3 loaded!');
-});
+show(keys(z))
+show('z props', propvals(z))
 
-lib('jquery', function(){
-  cl('jq', window.jQuery);
-  // $('body').append('<p>from jq!</p>');
-});
 </script>
 </body>

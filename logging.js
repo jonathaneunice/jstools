@@ -21,13 +21,14 @@ var repr = JSON.stringify;
 var reprp = function(x) { return JSON.stringify(x, null, '  '); };
 
 
-var sho_where = true;
+var say_where = true;
 var _lp_div = null;
 var _line_offset = 0;
 var emit = prep_emit();
 var BR;
 
-function start_sho(offset) {
+function start_run(label) {
+  var offset;
   if (offset === true) {
     var e = new Error();
     _cl('e.stack', e.stack);
@@ -37,11 +38,11 @@ function start_sho(offset) {
   }
   var dashes = "-------";
   var now = new Date();
-  var parts = [dashes, now.toLocaleString(), dashes];
+  var parts = label ? [ dashes, label, now.toLocaleString(), dashes ]
+                    : [ dashes, now.toLocaleString(), dashes ];
   var msg = parts.join(' ');
   emit(msg);
 }
-var _start_sho = start_sho;
 
 function stack_parse(s, lb) {
   var lines = s.split('\n');
@@ -68,56 +69,69 @@ function wherefrom() {
     return '';
   } else {
     var lineNo = where.lineNumber - _line_offset + 1;
-    var shortName = where.fileName.match(/^.*\/(.*)$/)[1];
-    return shortName + ':' + lineNo;
+    cl(where);
+    cl(where.fileName)
+    var nameMatch = where.fileName.match(/^.*\/(.*)$/);
+    var shortName = nameMatch ? nameMatch[1] : where.fileName;
+    var together = shortName + ':' + lineNo;
+    if (emit === weblog) {
+      return `<span class="lineno">${together}</span>`;
+    } else {
+      return together;
+    }
   }
 }
 
-function sho() {
+/**
+ * Emit some text where. Whether that is emitted to the
+ * console or an ouput div depends on where running.
+ */
+function say() {
   var args = Array.prototype.slice.call(arguments);
-  if (sho_where) {
+  if (say_where) {
     args.splice(0, 0, wherefrom());
   }
   emit.apply(null, args);
 }
 
-function shov() {
+function show() {
   var args = Array.prototype.slice.call(arguments);
   var runningLength = 0;
   var outargs = [];
+  var keyfmt = k => (emit === weblog) ? `<span class="key">${k}</span>` : k;
+  var sepfmt = s => (emit === weblog) ? `<span class="sep">${s}</span>` : s;
   if (args.length) {
     for (var i=0; i<args.length; i++) {
       var a = args[i];
+      var t = typeof a;
       var r;
       if (i === 0) {
-        var t = typeof a;
         if (t === 'string') {
           r = a;
-        } else if (t === 'object') {
+        } else if ((t === 'object') && (!Array.isArray(a))) {
           r = Object.keys(a)
-                    .map(k => `${k}: ${repr(a[k])}`)
+                    .map(k => `${keyfmt(k)}${sepfmt(':')} ${repr(a[k])}`)
                     .join(', ');
         }
         else {
-          r = repr(r);
+          r = repr(a);
         }
       } else {
-        r = repr(r);
+        r = repr(a);
       }
       outargs.push(r);
     }
   }
-  if (sho_where) {
+  if (say_where) {
     outargs.splice(0, 0, wherefrom());
   }
   emit.apply(null, outargs);
 }
 
-var nosho = dcl; // show nothing
-var _shor = shor;
-var _noshor = dcl;
-var _sho = sho;
-var _nosho = nosho;
+var noshow = dcl; // show nothing
+var nosay  = dcl;
+const yessay = say;  // can always use these to restore showing
+const yesshow = show;
 
 /**
  * Convert the the properties of an object
@@ -195,10 +209,25 @@ var _lp_css = `
 
 #logprint > p {
     margin: 10px 0 5px 0;
-    font-size: 14px;
-    color: blue;
+    font-size: 15pt;
     font-family: "Lucida Console", sans-serif;
     font-weight: normal;
+    line-height: 115%;
+}
+
+#logprint .lineno {
+  color: green;
+}
+
+#logprint .key {
+  color: blue;
+  font-weight: bold;
+  background-color: #BEEBFA;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+#logprint .sep {
+  color: blue;
 }
 `;
 
@@ -246,20 +275,21 @@ if (typeof module === "undefined")
   module = {};
 
 exports = module.exports = {
-  _cl: _cl,
-  _dcl: _dcl,
   cl: cl,
   dcl: dcl,
   repr: repr,
   reprp: reprp,
-  sho: sho,
-  nosho: nosho,
+  say: say,
+  show: show,
+  nosay: nosay,
+  noshow: noshow,
+  yessay: yessay,
+  yesshow: yesshow,
   rounder: rounder,
   props: props,
   propvals: propvals,
   keys: keys,
   lib: lib,
-  load: load
 };
 
 // globalize these functions
