@@ -23,35 +23,13 @@ var _line_offset = 0;
 var emit = prep_emit();
 var BR;
 
-function lib(name, cb) {
-
-  _cl('lib() with', name)
-  if (name === 'd3') {
-    loadScript('https://d3js.org/d3.v4.min.js', cb);
-  } else if (name === 'jquery') {
-    loadScript('https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', cb);
-  } else {
-    cl("don't know lib type " + name);
-  }
-}
-
-function loadScript(url, callback) {
-
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.async = true;
-  script.onreadystatechange = callback;
-  script.onload = callback;
-  script.src = url;
-  document.getElementsByTagName("head")[0].appendChild(script);
-}
-
 function start_sho(offset) {
   if (offset === true) {
     var e = new Error();
     _cl('e.stack', e.stack);
     var where = stack_parse(e.stack, 2);
     _line_offset = where.lineNumber;
+    _cl('lineNumber', lineNumber);
   }
   var dashes = "-------";
   var now = new Date();

@@ -8,11 +8,14 @@
 _start_sho();
 _sho('this is good')
 
-window.d3 = null;
 lib('d3', function(){
-  _cl('in cb');
-  window.d3 = exports;
+  // cl('d3 cb')
   d3.select('body').append('p').text('d3 loaded!');
+});
+
+lib('jquery', function(){
+  cl('jq', window.jQuery);
+  // $('body').append('<p>from jq!</p>');
 });
 </script>
 </body>
