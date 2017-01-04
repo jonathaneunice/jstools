@@ -84,7 +84,26 @@ function sho() {
   emit.apply(null, args);
 }
 
+function shor() {
+  var args = Array.prototype.slice.call(arguments);
+  if (args.length) {
+    for (var i=0; i<args.length; i++) {
+      var a = args[i];
+      if ((i === 0) && (typeof a === 'string')) {
+        continue;
+      }
+      args[i] = repr(a);
+    }
+  }
+  if (sho_where) {
+    args.splice(0, 0, wherefrom());
+  }
+  emit.apply(null, args);
+}
+
 var nosho = dcl; // show nothing
+var _shor = shor;
+var _noshor = dcl;
 var _sho = sho;
 var _nosho = nosho;
 
