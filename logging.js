@@ -81,7 +81,7 @@ function sho() {
   emit.apply(null, args);
 }
 
-function shor() {
+function shov() {
   var args = Array.prototype.slice.call(arguments);
   var runningLength = 0;
   var outargs = [];
