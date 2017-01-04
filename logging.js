@@ -89,8 +89,13 @@ function shor() {
   if (args.length) {
     for (var i=0; i<args.length; i++) {
       var a = args[i];
-      if ((i === 0) && (typeof a === 'string')) {
-        continue;
+      if (i === 0) {
+        var t = typeof a;
+        if (t === 'string')
+          continue;
+        if (t === 'object') {
+          args[i] = repr(a).replace(/^\{|\}$/g, '');
+        }
       }
       args[i] = repr(a);
     }
