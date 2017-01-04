@@ -86,24 +86,34 @@ function sho() {
 
 function shor() {
   var args = Array.prototype.slice.call(arguments);
+  var runningLength = 0;
+  var outargs = [];
   if (args.length) {
     for (var i=0; i<args.length; i++) {
       var a = args[i];
+      var r;
       if (i === 0) {
         var t = typeof a;
-        if (t === 'string')
-          continue;
-        if (t === 'object') {
-          args[i] = repr(a).replace(/^\{|\}$/g, '');
+        if (t === 'string') {
+          r = a;
+        } else if (t === 'object') {
+          r = Object.keys(a)
+                    .map(k => `${k}: ${repr(a[k])}`)
+                    .join(', ');
         }
+        else {
+          r = repr(r);
+        }
+      } else {
+        r = repr(r);
       }
-      args[i] = repr(a);
+      outargs.push(r);
     }
   }
   if (sho_where) {
-    args.splice(0, 0, wherefrom());
+    outargs.splice(0, 0, wherefrom());
   }
-  emit.apply(null, args);
+  emit.apply(null, outargs);
 }
 
 var nosho = dcl; // show nothing
