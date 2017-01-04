@@ -227,7 +227,8 @@ exports = module.exports = {
   props: props,
   propvals: propvals,
   keys: keys,
-  lib: lib
+  lib: lib,
+  load: load
 };
 
 // globalize these functions
@@ -237,6 +238,3 @@ if (typeof window !== "undefined") {
 for (p in exports) {
   global[p] = exports[p];
 }
-
-
-
